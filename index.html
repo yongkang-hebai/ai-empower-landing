@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AI 赋能 · 成本管控与资产提升 | 众邦康养</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@400;500;700;900&family=Source+Han+Serif+SC:wght@400;700;900&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  /* ========== Reset & Base ========== */
+  *,*::before,*::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { background: #0F0E0C; color: #F5EFE6; -webkit-font-smoothing: antialiased; }
+  body {
+    line-height: 1.8;
+    font-family: "Source Han Serif SC","Noto Serif SC","FangTi", "FangTi_GB2312","simfang","STSong","Songti SC","SimSun", serif;
+    font-weight: 400;
+    line-height: 1.7;
+    font-size: 17px;
+    overflow-x: hidden;
+  }
+  :root{
+    --bg: #0F0E0C;          /* 暖墨黑主底 — 投屏不浮 */
+    --bg-soft: #1A1714;     /* 次级深底 */
+    --bg-card: #1F1B16;     /* 卡片底 — 比主底亮 1 档 */
+    --ink: #F5EFE6;         /* 象牙白主文字 — 不纯白护眼 */
+    --ink-soft: #C9B89E;    /* 古铜灰 — 副文字 */
+    --ink-dim: #8C7B66;     /* 深古铜 — 最淡 */
+    --line: rgba(212,165,116,0.14);
+    --line-strong: rgba(212,165,116,0.32);
+    --brand: #C5392E;       /* 朱红 — 章节 / CTA / 品牌字 */
+    --brand-soft: rgba(197,57,46,0.18);
+    --gold: #D4A574;        /* 古铜金 — 数字 / 案例名 / Hero 强调 */
+    --gold-soft: rgba(212,165,116,0.18);
+    --ai: #D4A574;          /* AI 元素标记 — 用金不用蓝（黑金红调统一） */
+    --ai-soft: rgba(212,165,116,0.18);
+    /* 主底 #0F0E0C · 文字 #F5EFE6 · 朱红 #C5392E · 古铜金 #D4A574 */
+    --serif: "Source Han Serif SC","Noto Serif SC","FangTi","FangTi_GB2312","simfang","STSong","Songti SC", serif;
+    --mono: "JetBrains Mono", ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+  }
+  a { color: inherit; text-decoration: none; }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  img { max-width: 100%; display: block; }
+
+  /* ========== Editable Regions ========== */
+  [contenteditable="true"]:focus {
+    outline: 1px dashed rgba(242,101,34,0.55);
+    outline-offset: 6px;
+    background: rgba(242,101,34,0.04);
+    border-radius: 2px;
+  }
+  [contenteditable="true"]:hover { cursor: text; }
+
+  /* ========== Top Bar ========== */
+  .topbar {
+    position: sticky; top: 0; z-index: 50;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    background: rgba(15,14,12,0.92);
+    border-bottom: 1px solid rgba(212,165,116,0.20);
+  }
+  .topbar-inner {
+    max-width: 1440px; margin: 0 auto;
+    padding: 16px 40px;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 24px;
+  }
+  .brand-mark {
+    display: flex; align-items: baseline; gap: 12px;
+  }
+  .brand-mark .zh {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 22px;
+    letter-spacing: 0.04em;
+    color: #F5EFE6;
+  }
+  .brand-mark .zh .x { color: var(--brand); margin: 0 4px; }
+  .brand-mark .en {
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+  .topbar-actions { display: flex; align-items: center; gap: 12px; }
+  .save-status {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    color: var(--ai);
+    white-space: nowrap;
+  }
+  .save-status.flash { animation: flash-mint 0.6s ease; }
+  @keyframes flash-mint {
+    0% { opacity: 0.3; }
+    50% { opacity: 1; text-shadow: 0 0 8px rgba(212,165,116,0.5); }
+    100% { opacity: 0.85; }
+  }
+  .btn {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 9px 16px;
+    border: 1px solid var(--line-strong);
+    border-radius: 2px;
+    font-family: var(--serif);
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    color: #F5EFE6;
+    background: transparent;
+    transition: all 0.2s ease;
+  }
+  .btn:hover { border-color: var(--brand); color: var(--brand); }
+  .btn-primary {
+    background: var(--brand);
+    border-color: var(--brand);
+    color: #FFFFFF;
+    font-weight: 700;
+  }
+  .btn-primary:hover { background: #FF7A3D; border-color: #FF7A3D; color: #FFFFFF; }
+  .btn .dot {
+    width: 6px; height: 6px; border-radius: 50%;
+    background: var(--brand);
+    box-shadow: 0 0 8px rgba(242,101,34,0.6);
+  }
+
+  /* ========== Hero ========== */
+  .hero {
+    max-width: 1440px; margin: 0 auto;
+    padding: 120px 40px 100px;
+    position: relative;
+  }
+  .hero::before {
+    content: ""; position: absolute; inset: 0;
+    background:
+      radial-gradient(800px 400px at 80% 20%, rgba(242,101,34,0.08), transparent 70%),
+      radial-gradient(600px 300px at 10% 80%, rgba(212,165,116,0.06), transparent 70%);
+    pointer-events: none;
+  }
+  .hero-inner { position: relative; }
+  .eyebrow {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-family: var(--mono);
+    font-size: 12px; letter-spacing: 0.32em;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+    padding: 8px 0;
+    border-top: 1px solid var(--brand);
+    border-bottom: 1px solid var(--brand);
+    padding-top: 8px; padding-bottom: 8px;
+  }
+  .eyebrow span { display: inline-block; }
+  .hero h1 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(40px, 6vw, 80px);
+    line-height: 1.2;
+    color: #F5EFE6;
+    letter-spacing: 0.02em;
+    max-width: 1080px;
+    margin-bottom: 56px;
+  }
+  .hero h1 .accent { color: var(--brand); }
+  .hero h1 .mint { color: var(--ai); }
+
+  .thesis {
+    border-left: 3px solid var(--brand);
+    padding: 28px 0 28px 32px;
+    margin-bottom: 80px;
+    max-width: 1080px;
+  }
+  .thesis-flow {
+    display: flex; flex-wrap: wrap; align-items: center;
+    gap: 18px;
+    font-family: var(--serif);
+    font-size: clamp(20px, 2.2vw, 28px);
+    font-weight: 700;
+    line-height: 1.5;
+  }
+  .thesis-flow .step { color: #F5EFE6; }
+  .thesis-flow .step .num {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--brand);
+    margin-right: 8px;
+    font-size: 0.85em;
+  }
+  .thesis-flow .arrow {
+    color: var(--brand);
+    font-size: 1.3em;
+    font-weight: 700;
+    margin: 0 6px;
+  }
+
+  .hero-meta {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0,1fr));
+    gap: 40px;
+    max-width: 1080px;
+    padding-top: 40px;
+    border-top: 1px solid var(--line);
+  }
+  .hero-meta .m .label {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+    margin-bottom: 8px;
+  }
+  .hero-meta .m .val {
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 22px;
+    color: #F5EFE6;
+  }
+  .hero-meta .m .val em {
+    font-style: normal;
+    color: var(--brand);
+    font-family: var(--mono);
+    margin-right: 4px;
+  }
+
+  /* ========== Section Title ========== */
+  .section {
+    max-width: 1440px; margin: 0 auto;
+    padding: 0 40px;
+  }
+  .sec-head {
+    display: flex; align-items: flex-end; justify-content: space-between;
+    gap: 32px;
+    margin-bottom: 64px;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(212,165,116,0.20);
+  }
+  .sec-head .lbl {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+  .sec-head h2 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(28px, 3.2vw, 44px);
+    line-height: 1.35;
+    color: #F5EFE6;
+    letter-spacing: 0.02em;
+    max-width: 1080px;
+  }
+  .sec-head .meta {
+    font-family: var(--mono);
+    font-size: 12px;
+    color: var(--ink-dim);
+    text-align: right;
+    white-space: nowrap;
+    letter-spacing: 0.12em;
+  }
+
+  /* ========== Timeline (Desktop) ========== */
+  .timeline {
+    position: relative;
+    padding: 40px 0 60px;
+  }
+  .timeline::before {
+    content: ""; position: absolute;
+    left: 0; right: 0; top: 110px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--line-strong) 10%, var(--line-strong) 90%, transparent);
+  }
+  .timeline-grid {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0,1fr));
+    gap: 28px;
+    position: relative;
+  }
+  .pillar {
+    background: var(--bg-card);
+    border-top: 2px solid var(--gold);
+    border-radius: 4px;
+    padding: 28px 24px 28px;
+    display: flex; flex-direction: column;
+    position: relative;
+    transition: all 0.25s ease;
+    box-shadow: 0 1px 2px rgba(28,25,23,0.04), 0 4px 20px rgba(28,25,23,0.06);
+  }
+  .pillar:hover {
+    border-color: var(--line-strong);
+    transform: translateY(-2px);
+  }
+  .pillar::before {
+    content: ""; position: absolute;
+    top: -8px; left: 32px;
+    width: 14px; height: 14px;
+    border-radius: 50%;
+    background: var(--bg);
+    border: 2px solid var(--brand);
+    box-shadow: 0 0 0 4px rgba(242,101,34,0.15);
+  }
+  .pillar .num-tag {
+    font-family: var(--mono);
+    font-size: 22px;
+    letter-spacing: 0.24em;
+    color: var(--brand);
+    margin-bottom: 8px;
+  }
+  .pillar h3 {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: 28px;
+    line-height: 1.3;
+    color: #F5EFE6;
+    margin-bottom: 18px;
+    letter-spacing: 0.02em;
+  }
+  .pillar .desc {
+    font-size: 14.5px;
+    color: var(--ink-soft);
+    margin-bottom: 22px;
+    line-height: 1.8;
+  }
+  .pillar .desc li { list-style: none; padding-left: 14px; position: relative; margin-bottom: 6px; }
+  .pillar .desc li::before {
+    content: ""; position: absolute; left: 0; top: 10px;
+    width: 6px; height: 1px; background: var(--brand);
+  }
+
+  .pillar .block {
+    border-top: 1px dashed var(--line);
+    padding-top: 16px;
+    margin-top: 14px;
+  }
+  .pillar .block-label {
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--serif);
+    font-weight: 700;
+    font-size: 13px;
+    color: #F5EFE6;
+    margin-bottom: 10px;
+    letter-spacing: 0.04em;
+  }
+  .pillar .block-label .ico {
+    font-size: 16px;
+    filter: saturate(0.9);
+  }
+
+  .cost-table {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    border: 1px solid var(--line);
+    border-radius: 2px;
+    overflow: hidden;
+    margin-bottom: 6px;
+  }
+  .cost-table .cell {
+    padding: 12px 12px;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+  .cost-table .cell.old {
+    background: rgba(100,116,139,0.10);
+    color: var(--ink-soft);
+    border-right: 1px solid var(--line);
+  }
+  .cost-table .cell.new {
+    background: var(--ai-soft);   /* #2563EB 14% 透明底 */
+    color: #DBEAFE;
+    border-left: 2px solid #D4A574; /* AI 方案正向侧用绿色左边框强调 */
+  }
+  .cost-table .cell .tag {
+    display: block;
+    font-family: var(--mono);
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--ink-dim);
+    margin-bottom: 4px;
+    text-transform: uppercase;
+  }
+  .cost-table .cell.new .tag { color: var(--ai); }
+
+  .num-hl {
+    font-family: var(--mono);
+    font-weight: 700;
+    color: var(--ai);                 /* AI 蓝：量化数据高亮 */
+    font-size: 1.8em;                 /* ≈30px on 17px base — 投屏字号 */
+    letter-spacing: -0.01em;
+    line-height: 1.1;
+  }
+  /* 极少数场景需要橙色数字时使用 .num-hl.brand 显式标记 */
+  .num-hl.brand { color: var(--brand); }
+  .num-hl.mint { color: var(--ai); } /* #D4A574 (gold) */
+  .num-hl.big {
+    font-size: 3.2em;
+    letter-spacing: -0.02em;
+    line-height: 1.0;
+  }
+
+  .case-list { font-size: 14px; }
+  .case-list li {
+    list-style: none;
+    margin-bottom: 14px;
+    line-height: 1.6;
+  }
+  .case-list li .ct {
+    color: #F5EFE6;
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .case-list li .cl {
+    color: var(--ink-soft);
+    display: block;
+    margin: 4px 0 4px;
+    font-size: 12.5px;
+  }
+  .case-list li a {
+    display: inline-flex; align-items: center; gap: 4px;
+    color: var(--brand);
+    font-family: var(--mono);
+    font-size: 11px;
+    word-break: break-all;
+    border-bottom: 1px solid rgba(242,101,34,0.3);
+    padding-bottom: 1px;
+    transition: all 0.2s;
+  }
+  .case-list li a:hover { color: #FF7A3D; border-bottom-color: #FF7A3D; }
+
+  .pillar .footer-tag {
+    margin-top: auto;
+    padding-top: 18px;
+    display: flex; align-items: center; gap: 8px;
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.16em;
+    color: var(--ink-dim);
+    text-transform: uppercase;
+  }
+  .pillar .footer-tag::before {
+    content: ""; flex: 1; height: 1px; background: var(--line);
+  }
+
+  /* ========== Closing ========== */
+  .closing {
+    max-width: 1440px; margin: 120px auto 80px;
+    padding: 80px 40px;
+    background: linear-gradient(135deg, #1F1B16 0%, #2A2218 100%);
+    border-top: 1px solid var(--line);
+    border-bottom: 1px solid rgba(212,165,116,0.20);
+    position: relative;
+  }
+  .closing::before {
+    content: ""; position: absolute;
+    left: 40px; top: -1px; width: 80px; height: 2px;
+    background: var(--brand);
+  }
+  .closing .cl-head {
+    font-family: var(--mono);
+    font-size: 11px;
+    letter-spacing: 0.32em;
+    color: var(--brand);
+    text-transform: uppercase;
+    margin-bottom: 32px;
+  }
+  .closing .gold {
+    font-family: var(--serif);
+    font-weight: 900;
+    font-size: clamp(28px, 3.4vw, 44px);
+    line-height: 1.6;
+    color: #F5EFE6;
+    max-width: 1080px;
+    letter-spacing: 0.02em;
+  }
+  .closing .gold .accent { color: var(--brand); }
+  .closing .gold .positive { color: var(--ai); font-weight: 700; text-shadow: 0 0 14px rgba(212,165,116,0.30); } /* #D4A574 (gold) */
+  .closing .gold .arrow { color: var(--ai); margin: 0 10px; font-weight: 400; } /* #2563EB 箭头 */
+  .closing .signoff {
+    margin-top: 48px;
+    padding-top: 24px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  footer {
+    max-width: 1440px; margin: 0 auto;
+    padding: 40px 40px 60px;
+    border-top: 1px solid var(--line);
+    display: flex; justify-content: space-between; align-items: center;
+    font-family: var(--mono);
+    font-size: 11px;
+    color: var(--ink-dim);
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    flex-wrap: wrap;
+    gap: 16px;
+  }
+
+  /* ========== Toast ========== */
+  .toast {
+    position: fixed; bottom: 32px; left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    padding: 12px 22px;
+    background: rgba(42,37,32,0.95);
+    border: 1px solid var(--brand);
+    border-radius: 2px;
+    color: #F5EFE6;
+    font-size: 13px;
+    font-family: var(--serif);
+    opacity: 0;
+    pointer-events: none;
+    transition: all 0.3s ease;
+    z-index: 100;
+    letter-spacing: 0.04em;
+  }
+  .toast.show {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+
+  /* ========== Responsive ========== */
+  @media (max-width: 1100px) {
+    .timeline-grid { grid-template-columns: repeat(2, minmax(0,1fr)); gap: 24px; }
+    .timeline::before { display: none; }
+    .hero-meta { grid-template-columns: 1fr 1fr; }
+  }
+  @media (max-width: 720px) {
+    .topbar-inner { padding: 14px 20px; flex-wrap: wrap; }
+    .hero { padding: 80px 20px 60px; }
+    .section, .closing, footer { padding-left: 20px; padding-right: 20px; }
+    .hero-meta { grid-template-columns: 1fr; gap: 20px; }
+    .timeline-grid { grid-template-columns: 1fr; }
+    .thesis { padding-left: 20px; }
+    .sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+    .sec-head .meta { text-align: left; }
+    .topbar-actions .btn span:not(.dot) { display: none; }
+    .topbar-actions .btn { padding: 9px 12px; }
+  }
+</style>
+</head>
+<body>
+
+<main id="page-main">
+
+<!-- ========== TOP BAR ========== -->
+<header class="topbar">
+  <div class="topbar-inner">
+    <div class="brand-mark">
+      <span class="zh" contenteditable="true">众邦康养<span class="x">×</span>AI 赋能</span>
+      <span class="en">AI · COST · ASSET · SCALE</span>
+    </div>
+    <div class="topbar-actions">
+      <button class="btn" id="btn-reset" title="恢复源文档原文"><span class="dot"></span><span>恢复原版</span></button>
+      <button class="btn btn-primary" id="btn-save" title="将当前编辑后的页面保存到本地"><span>保存到本地</span></button>
+      <span class="save-status" id="save-status">已自动保存 —</span>
+    </div>
+  </div>
+</header>
+
+<!-- ========== HERO ========== -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow" contenteditable="true"><span>AI EMPOWERMENT · 成本管控与资产提升</span></div>
+
+    <h1 contenteditable="true">
+      把<span class="accent">智力劳动</span>的成本<br>
+      转嫁为<span class="mint">组织数字资产</span><br>
+      驱动品牌<span class="accent">低成本扩张</span>
+    </h1>
+
+    <div class="thesis">
+      <div class="thesis-flow" contenteditable="true">
+        <span class="step"><span class="num">01</span>AI 转嫁智力劳动成本</span>
+        <span class="arrow">→</span>
+        <span class="step"><span class="num">02</span>沉淀组织数字资产</span>
+        <span class="arrow">→</span>
+        <span class="step"><span class="num">03</span>驱动品牌低成本扩张</span>
+      </div>
+    </div>
+
+    <div class="hero-meta">
+      <div class="m" contenteditable="true">
+        <div class="label">CORE QUESTION 01</div>
+        <div class="val"><em>💰</em>省了什么成本？</div>
+      </div>
+      <div class="m" contenteditable="true">
+        <div class="label">CORE QUESTION 02</div>
+        <div class="val"><em>🏗️</em>沉淀了什么资产？</div>
+      </div>
+      <div class="m" contenteditable="true">
+        <div class="label">CORE QUESTION 03</div>
+        <div class="val"><em>📎</em>可复制的成果案例？</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== TIMELINE / FOUR PILLARS ========== -->
+<section class="section" style="margin-top: 40px;">
+  <div class="sec-head">
+    <div>
+      <div class="lbl" contenteditable="true">FOUR PILLARS · 04 板块</div>
+      <h2 contenteditable="true">从「替代人力」到「扩张引擎」：四个递进板块，给出每一步的量化证据</h2>
+    </div>
+    <div class="meta" contenteditable="true">DESK → FLOW → ASSET → SCALE</div>
+  </div>
+
+  <div class="timeline">
+    <div class="timeline-grid">
+
+      <!-- ===== 板块 1 ===== -->
+      <article class="pillar">
+        <div class="num-tag" contenteditable="true">01 / DESK</div>
+        <h3 contenteditable="true">24小时零失误 AI 助理 / 数字分身</h3>
+
+        <ul class="desc" contenteditable="true">
+          <li>自动检索行业内外一手资讯和个性化推送</li>
+          <li>24小时即时响应查询、报告整理</li>
+          <li>基于 AI 智能体记忆工程，与使用者共同成长</li>
+          <li>在全平台复制数字分身，执行定时任务</li>
+        </ul>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">💰</span><span contenteditable="true">成本对比</span></div>
+          <div class="cost-table" contenteditable="true">
+            <div class="cell old"><span class="tag">传统方案</span>人工检索 / 报告撰写 / 值守岗位</div>
+            <div class="cell new"><span class="tag">AI 方案</span>数字分身 <span class="num-hl">7×24h</span> 自动执行</div>
+            <div class="cell old"><span class="tag">决策失误</span>信息遗漏造成隐性损失</div>
+            <div class="cell new"><span class="tag">决策失误</span>全面检索 + 时效 <span class="num-hl">+18h</span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">🏗️</span><span contenteditable="true">沉淀资产</span></div>
+          <ul class="desc" contenteditable="true" style="margin-bottom:0;">
+            <li>个性化知识库 + 团队记忆库（越用越聪明）</li>
+            <li>一份数字分身部署 → 多端复用</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">📎</span><span contenteditable="true">成果案例</span></div>
+          <ul class="case-list" contenteditable="true">
+            <li>
+              <span class="ct">百度智能云 AI 数字员工：</span>
+              <span class="cl">7×24小时客服，用户申保成功率提升 <span class="num-hl">60%</span>，服务时效提升 <span class="num-hl">18小时</span>。已在百度客服中心、教育、金融等行业落地</span>
+              <a href="https://www.rmlt.com.cn/2025/0806/737158.shtml" target="_blank" rel="noopener">→ rmlt.com.cn/2025/0806/737158.shtml</a>
+            </li>
+            <li>
+              <span class="ct">灵洞 AI 数字员工（文旅行业）：</span>
+              <span class="cl">上线3个月视频分发效率提升 <span class="num-hl">500%</span>，获客成本降低 <span class="num-hl">38%</span>，运营团队从10人压缩至2人</span>
+              <a href="https://m.tech.china.com/redian/2025/1224/122025_1786926.html" target="_blank" rel="noopener">→ m.tech.china.com/redian/2025/1224/122025_1786926.html</a>
+            </li>
+            <li>
+              <span class="ct">中信证券市值管理助理 CapitAl-Link：</span>
+              <span class="cl">金融领域AI数字员工，实时分析市场动态、解读政策，为市值管理决策提供数据支持</span>
+              <a href="https://www.betteryeah.com/blog/ai-digital-employee-complete-guide-2025" target="_blank" rel="noopener">→ betteryeah.com/blog/ai-digital-employee-complete-guide-2025</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-tag" contenteditable="true">REPLACES · DESK WORK</div>
+      </article>
+
+      <!-- ===== 板块 2 ===== -->
+      <article class="pillar">
+        <div class="num-tag" contenteditable="true">02 / FLOW</div>
+        <h3 contenteditable="true">流程管理——低成本数字管理系统</h3>
+
+        <ul class="desc" contenteditable="true">
+          <li>低成本搭建链接 AI 助理的数字管理系统</li>
+          <li>全流程信息实时自动更新、对齐信息</li>
+          <li>方便监控项目全流程和协调管理</li>
+        </ul>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">💰</span><span contenteditable="true">成本对比</span></div>
+          <div class="cost-table" contenteditable="true">
+            <div class="cell old"><span class="tag">传统方案</span>自研 / 采购复杂 OA / ERP 系统</div>
+            <div class="cell new"><span class="tag">AI 方案</span>AI 助理直接对接，省开发维护</div>
+            <div class="cell old"><span class="tag">跨部门对齐</span>会议、邮件反复沟通</div>
+            <div class="cell new"><span class="tag">跨部门对齐</span>人工协调减少 <span class="num-hl">60%+</span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">🏗️</span><span contenteditable="true">沉淀资产</span></div>
+          <ul class="desc" contenteditable="true" style="margin-bottom:0;">
+            <li>全流程信息实时对齐 → 沉淀为可回溯、可复用的项目管理数据资产</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">📎</span><span contenteditable="true">成果案例</span></div>
+          <ul class="case-list" contenteditable="true">
+            <li>
+              <span class="ct">AI 工作流自动化（12 个跨部门企业案例）：</span>
+              <span class="cl">涵盖财务对账、供应链管理、招聘筛选等场景，人工协调减少 <span class="num-hl">60%+</span></span>
+              <a href="https://worqlo.com/zh-CN/blog/ai-workflow-automation-12-real-world-use-cases-across-departments/" target="_blank" rel="noopener">→ worqlo.com/zh-CN/blog/ai-workflow-automation-12-real-world-use-cases-across-departments/</a>
+            </li>
+            <li>
+              <span class="ct">智能流程自动化 RPA+AI（腾讯云）：</span>
+              <span class="cl">多模态识别、毫秒级响应、全流程合规保障，指数级效能提升</span>
+              <a href="https://cloud.tencent.com/developer/article/2579070" target="_blank" rel="noopener">→ cloud.tencent.com/developer/article/2579070</a>
+            </li>
+            <li>
+              <span class="ct">中国企业 AI + 自动化降本增效实操指南：</span>
+              <span class="cl">制造、贸易、连锁零售的完整落地路径</span>
+              <a href="https://simplico.net/2025/11/29/using-ai-automation-to-build-a-cost-reduction-and-productivity-system-a-practical-guide-for-chinese-businesses-zh/" target="_blank" rel="noopener">→ simplico.net/2025/11/29/using-ai-automation-to-build-a-cost-reduction-and-productivity-system-a-practical-guide-for-chinese-businesses-zh/</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-tag" contenteditable="true">REPLACES · PROCESS COST</div>
+      </article>
+
+      <!-- ===== 板块 3 ===== -->
+      <article class="pillar">
+        <div class="num-tag" contenteditable="true">03 / ASSET</div>
+        <h3 contenteditable="true">培训管理：摆脱强人依赖，迅速提升组织能力</h3>
+
+        <ul class="desc" contenteditable="true">
+          <li>搭载到各网格院区、门店，针对性定制"千人千店"的 AI 副店长</li>
+          <li>基本自动化运营工作：拜访、接待、排班、护理流程监控</li>
+          <li>基于实际一线业务经验，萃取真实场景的"优秀干法"</li>
+          <li>批量产出各业务线"培训一页纸"</li>
+          <li>以"金牌代教 + 共同成长"方式迅速提升标准化能力</li>
+        </ul>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">💰</span><span contenteditable="true">成本对比</span></div>
+          <div class="cost-table" contenteditable="true">
+            <div class="cell old"><span class="tag">传统方案</span>金牌员工流失 = 能力断层</div>
+            <div class="cell new"><span class="tag">AI 方案</span>绝智系统赋能门店效率 <span class="num-hl">+39%</span></div>
+            <div class="cell old"><span class="tag">基层管理</span>店长事务性工作时长高</div>
+            <div class="cell new"><span class="tag">基层管理</span>事务性时长减少 <span class="num-hl">55%</span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">🏗️</span><span contenteditable="true">沉淀资产</span></div>
+          <ul class="desc" contenteditable="true" style="margin-bottom:0;">
+            <li>萃取一线"优秀干法" → 沉淀为标准化"培训一页纸"知识资产</li>
+            <li>可复制、可迭代、不依赖个别强人</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">📎</span><span contenteditable="true">成果案例</span></div>
+          <ul class="case-list" contenteditable="true">
+            <li>
+              <span class="ct">绝味鸭脖 × AI 智能体（"绝智" + "小火鸭"）：</span>
+              <span class="cl">汇集全国优秀店长的实战经验赋能万家门店，门店经营效率提升 <span class="num-hl">39%</span>，动态使用超百万次。店员可随时咨询，实现"边学边干边会"</span>
+              <a href="https://hea.china.com/articles/20250324/202503241651582.html" target="_blank" rel="noopener">→ hea.china.com/articles/20250324/202503241651582.html</a>
+              <a href="https://m.ebrun.com/582299.html" target="_blank" rel="noopener" style="margin-left:8px;">→ m.ebrun.com/582299.html</a>
+            </li>
+            <li>
+              <span class="ct">某便利店集团 × "数字运营官"：</span>
+              <span class="cl">基于大模型重构门店管理流程，店长事务性工作时长减少 <span class="num-hl">55%</span>，专注核心经营时间增加 <span class="num-hl">3 倍</span></span>
+              <a href="https://www.woshipm.com/ai/6187855.html" target="_blank" rel="noopener">→ woshipm.com/ai/6187855.html</a>
+            </li>
+            <li>
+              <span class="ct">瑞幸咖啡 AI 智能体（1.0版）：</span>
+              <span class="cl">接入豆包 + DeepSeek 大模型，语音点单 + 智能推荐，具备持续学习能力，"越用越懂你"</span>
+              <a href="https://www.enicn.com/Enicn/2025/article_0618/85083.html" target="_blank" rel="noopener">→ enicn.com/Enicn/2025/article_0618/85083.html</a>
+            </li>
+            <li>
+              <span class="ct">极客时间 × AI 人才培养：</span>
+              <span class="cl">"百人AI精英训战营"体系，已助力 <span class="num-hl">3000+</span> 企业构建AI人才梯队</span>
+              <a href="https://b.geekbang.org/news/c9f0f895fb98ab9159f51fd0297e236d" target="_blank" rel="noopener">→ b.geekbang.org/news/c9f0f895fb98ab9159f51fd0297e236d</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-tag" contenteditable="true">REPLACES · HERO DEPENDENCY</div>
+      </article>
+
+      <!-- ===== 板块 4 ===== -->
+      <article class="pillar">
+        <div class="num-tag" contenteditable="true">04 / SCALE</div>
+        <h3 contenteditable="true">组织资产沉淀与加速品牌版图扩张</h3>
+
+        <ul class="desc" contenteditable="true">
+          <li>业务一线人员沉淀标准化的组织知识资产</li>
+          <li>基于业务场景培训出众邦康养服务模式的业务员 + AI 协同机制</li>
+          <li>培养可迁移复制、能部署与升级智能体的专业人才（具备 FDE 人才职能）</li>
+          <li>赋能合伙人同时作为强力抓手</li>
+          <li>加速品牌版图和影响力扩张</li>
+        </ul>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">💰</span><span contenteditable="true">成本对比</span></div>
+          <div class="cost-table" contenteditable="true">
+            <div class="cell old"><span class="tag">扩张期传统</span>倍增人力管理 + 运营成本</div>
+            <div class="cell new"><span class="tag">扩张期 AI</span>训练好的机制批量复制</div>
+            <div class="cell old"><span class="tag">外脑依赖</span>零散服务商、难以规模化</div>
+            <div class="cell new"><span class="tag">外脑依赖</span>FDE 岗位发布量同比 <span class="num-hl">+800%</span></div>
+          </div>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">🏗️</span><span contenteditable="true">沉淀资产</span></div>
+          <ul class="desc" contenteditable="true" style="margin-bottom:0;">
+            <li>FDE 人才池 → 能部署、升级智能体的可迁移人才资产</li>
+            <li>众邦康养服务模式 → 标准化可复制的服务资产</li>
+            <li>赋能合伙人的强力抓手 → 品牌扩张的杠杆资产</li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <div class="block-label"><span class="ico">📎</span><span contenteditable="true">成果案例</span></div>
+          <ul class="case-list" contenteditable="true">
+            <li>
+              <span class="ct">Palantir FDE 模式（行业标杆）：</span>
+              <span class="cl">Echo（嵌入式分析师）+ Delta（部署工程师）双角色，把高阶工程师派驻客户现场，深度解决业务问题。FDE 岗位发布量 2025 年前9个月同比涨 <span class="num-hl">800%+</span></span>
+              <a href="https://gyznsw.cn/2026/04/24/palantir-fde-model-services-as-software-20260426/" target="_blank" rel="noopener">→ gyznsw.cn/2026/04/24/palantir-fde-model-services-as-software-20260426/</a>
+              <a href="https://36kr.com/p/3477432643132036" target="_blank" rel="noopener" style="margin-left:8px;">→ 36kr.com/p/3477432643132036</a>
+              <a href="https://www.80aj.com/2026/05/23/fde-forward-deployed-engineer/" target="_blank" rel="noopener" style="margin-left:8px;">→ 80aj.com/2026/05/23/fde-forward-deployed-engineer/</a>
+            </li>
+            <li>
+              <span class="ct">科理 "Echo+Delta 复合型 FDE"：</span>
+              <span class="cl">打通制造企业业务与技术断层，同步开展企业内部 AI 人才培养，搭建客户自有 AI 落地团队</span>
+              <a href="https://hea.china.com/articles/20260626/202606261902389.html" target="_blank" rel="noopener">→ hea.china.com/articles/20260626/202606261902389.html</a>
+            </li>
+            <li>
+              <span class="ct">OpenAI / Anthropic / Cohere 等 AI 巨头：</span>
+              <span class="cl">大规模招募 FDE，派驻客户企业定制和部署 AI 模型</span>
+              <a href="https://blog.csdn.net/Gaga246/article/details/158852136" target="_blank" rel="noopener">→ blog.csdn.net/Gaga246/article/details/158852136</a>
+            </li>
+            <li>
+              <span class="ct">绝味鸭脖 AI 战略：</span>
+              <span class="cl">联合腾讯发布零售连锁首个垂直 AI 场景大模型，将选址模型、存货策略等20年经验开放行业共享；2024年线上交易额达 <span class="num-hl">52 亿元</span></span>
+              <a href="https://tech.china.com/articles/20250513/202505131671510.html" target="_blank" rel="noopener">→ tech.china.com/articles/20250513/202505131671510.html</a>
+            </li>
+          </ul>
+        </div>
+
+        <div class="footer-tag" contenteditable="true">AMPLIFIES · BRAND SCALE</div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ========== CLOSING ========== -->
+<section class="closing">
+  <div class="cl-head" contenteditable="true">CLOSING · 收尾金句</div>
+  <p class="gold" contenteditable="true">
+    <span class="accent">强人驱动的企业</span> <span class="arrow">→</span>
+    <span>AI 转嫁智力劳动</span> <span class="arrow">→</span>
+    <span class="positive">低成本高效率且无上限的智力劳动转嫁</span>
+    <br><br>
+    实现：<span class="positive">无需扩张期倍增人力管理与运营成本</span> <span class="arrow">→</span>
+    <span class="positive">迅速扩张且打上强个性化的品牌印记</span>
+  </p>
+  <div class="signoff">
+    <span contenteditable="true">众邦康养 × AI 赋能</span>
+    <span contenteditable="true">CONFIDENTIAL PROPOSAL · 内部提案</span>
+  </div>
+</section>
+
+<footer>
+  <span contenteditable="true">© 众邦康养 · AI 赋能方案</span>
+  <span contenteditable="true">Rev. 1.0 · COST → ASSET → SCALE</span>
+</footer>
+
+</main><!-- /#page-main -->
+
+<div class="toast" id="toast">已保存</div>
+
+<script>
+/* ========== Source snapshot for Reset ========== */
+// Snapshot only the <main id="page-main"> contents (so reset restores content, not chrome)
+const SOURCE_MAIN = (function () {
+  const root = document.getElementById('page-main');
+  if (!root) return '';
+  return root.innerHTML;
+})();
+
+const STORAGE_KEY = 'ai-empower-content';
+
+/* ========== Helpers ========== */
+function pad2(n) { return String(n).padStart(2, '0'); }
+function nowStamp() {
+  const d = new Date();
+  return `${pad2(d.getHours())}:${pad2(d.getMinutes())}:${pad2(d.getSeconds())}`;
+}
+
+/* ========== Mark all editable regions ========== */
+function markEditable() {
+  document.querySelectorAll('[contenteditable="true"]').forEach(el => {
+    el.setAttribute('spellcheck', 'false');
+  });
+}
+
+/* ========== Auto-save: debounced localStorage persistence ========== */
+let autoSaveTimer = null;
+function scheduleAutoSave() {
+  clearTimeout(autoSaveTimer);
+  autoSaveTimer = setTimeout(() => {
+    try {
+      const main = document.getElementById('page-main') || document.querySelector('main');
+      if (!main) return;
+      localStorage.setItem(STORAGE_KEY, main.innerHTML);
+      const status = document.getElementById('save-status');
+      if (status) {
+        status.textContent = '已自动保存 ' + nowStamp();
+        status.classList.remove('flash');
+        void status.offsetWidth; // restart animation
+        status.classList.add('flash');
+      }
+    } catch (e) {
+      console.warn('[autoSave] failed:', e);
+    }
+  }, 500);
+}
+
+// 事件委托到 body，监听所有 contenteditable 的输入
+document.addEventListener('input', (e) => {
+  const t = e.target;
+  if (t && t.isContentEditable) scheduleAutoSave();
+});
+
+/* ========== Restore from localStorage on load ========== */
+function restoreFromStorage() {
+  try {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (!saved) return false;
+    const main = document.getElementById('page-main') || document.querySelector('main');
+    if (main) main.innerHTML = saved;
+    return true;
+  } catch (e) {
+    console.warn('[restore] failed:', e);
+    return false;
+  }
+}
+
+/* ========== Save to local file (File System Access API + Blob fallback) ========== */
+let cachedFileHandle = null;
+
+async function saveToLocal() {
+  const doctype = '<!DOCTYPE html>';
+  // Clone document
+  const clone = document.documentElement.cloneNode(true);
+  // Strip volatile UI from saved file (these live inside #page-main)
+  clone.querySelectorAll('#btn-save, #btn-reset, .toast').forEach(el => el.remove());
+  // Add origin marker
+  const marker = document.createElement('meta');
+  marker.setAttribute('name', 'exported-from');
+  marker.setAttribute('content', 'ai-empower-landing · ' + new Date().toISOString());
+  clone.querySelector('head').appendChild(marker);
+  const fullHTML = doctype + '\n' + clone.outerHTML;
+
+  // Preferred: File System Access API (Chromium browsers)
+  if (window.showSaveFilePicker) {
+    try {
+      if (!cachedFileHandle) {
+        cachedFileHandle = await window.showSaveFilePicker({
+          suggestedName: 'ai-empower-landing.html',
+          types: [{ description: 'HTML 页面', accept: { 'text/html': ['.html'] } }]
+        });
+      }
+      const writable = await cachedFileHandle.createWritable();
+      await writable.write(fullHTML);
+      await writable.close();
+      finishSave();
+      return;
+    } catch (e) {
+      // 用户取消或权限错误，回退到 Blob 方案
+      if (e && e.name === 'AbortError') return;
+      console.warn('[save] showSaveFilePicker failed, fallback:', e);
+      cachedFileHandle = null;
+    }
+  }
+
+  // Fallback: Blob + a.download
+  const blob = new Blob([fullHTML], { type: 'text/html;charset=utf-8' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'ai-empower-landing.html';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1500);
+  finishSave();
+}
+
+function finishSave() {
+  const status = document.getElementById('save-status');
+  if (status) {
+    status.textContent = '已保存到本地 ' + nowStamp();
+    status.classList.remove('flash');
+    void status.offsetWidth;
+    status.classList.add('flash');
+  }
+  showToast('已保存到本地');
+}
+
+/* ========== Reset to original ========== */
+function resetToSource() {
+  if (!confirm('确定要恢复到源文档原文吗？当前所有编辑将被覆盖。')) return;
+  const main = document.getElementById('page-main');
+  if (main) main.innerHTML = SOURCE_MAIN;
+  // Drop persisted edits
+  try { localStorage.removeItem(STORAGE_KEY); } catch (e) {}
+  markEditable();
+  rebindButtons();
+  const status = document.getElementById('save-status');
+  if (status) status.textContent = '已自动保存 —';
+  showToast('已恢复原版');
+}
+
+/* ========== Toast ========== */
+let toastTimer;
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  if (!t) return;
+  t.textContent = msg;
+  t.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
+}
+
+/* ========== Rebind buttons after reset ========== */
+function rebindButtons() {
+  const saveBtn = document.getElementById('btn-save');
+  const resBtn = document.getElementById('btn-reset');
+  if (saveBtn) saveBtn.addEventListener('click', saveToLocal);
+  if (resBtn) resBtn.addEventListener('click', resetToSource);
+}
+
+/* ========== Init ========== */
+document.addEventListener('DOMContentLoaded', () => {
+  // 1) 恢复 localStorage 内容（如有）
+  const restored = restoreFromStorage();
+  // 2) 打 editable 标记
+  markEditable();
+  // 3) 绑定按钮
+  rebindButtons();
+  // 4) 初始化状态文字
+  const status = document.getElementById('save-status');
+  if (status) {
+    status.textContent = restored ? ('已自动保存 ' + nowStamp()) : '已自动保存 —';
+  }
+});
+</script>
+
+</body>
+</html>
