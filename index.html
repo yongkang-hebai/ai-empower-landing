@@ -559,6 +559,7 @@
     <div class="topbar-actions">
       <button class="btn" id="btn-reset" title="恢复源文档原文"><span class="dot"></span><span>恢复原版</span></button>
       <button class="btn btn-primary" id="btn-save" title="将当前编辑后的页面保存到本地"><span>保存到本地</span></button>
+      <button class="btn btn-primary" id="btn-sync" title="将编辑后的页面同步到 GitHub 仓库，实时更新线上页面"><span>同步到仓库</span></button>
       <span class="save-status" id="save-status">已自动保存 —</span>
     </div>
   </div>
@@ -950,7 +951,7 @@ async function saveToLocal() {
   // Clone document
   const clone = document.documentElement.cloneNode(true);
   // Strip volatile UI from saved file (these live inside #page-main)
-  clone.querySelectorAll('#btn-save, #btn-reset, .toast').forEach(el => el.remove());
+  clone.querySelectorAll('#btn-save, #btn-reset, #btn-sync, .toast').forEach(el => el.remove());
   // Add origin marker
   const marker = document.createElement('meta');
   marker.setAttribute('name', 'exported-from');
@@ -1029,11 +1030,145 @@ function showToast(msg) {
   toastTimer = setTimeout(() => t.classList.remove('show'), 2400);
 }
 
+/* ========== GitHub Sync ========== */
+const GITHUB_OWNER = 'yongkang-hebai';
+const GITHUB_REPO  = 'ai-empower-landing';
+const GITHUB_BRANCH = 'main';
+const GITHUB_PATH  = 'index.html';
+const TOKEN_KEY    = 'ai-empower-gh-token';
+
+function getStoredToken() {
+  try { return localStorage.getItem(TOKEN_KEY) || ''; } catch(e) { return ''; }
+}
+function storeToken(t) {
+  try { localStorage.setItem(TOKEN_KEY, t); } catch(e) {}
+}
+function clearToken() {
+  try { localStorage.removeItem(TOKEN_KEY); } catch(e) {}
+}
+
+function buildFullHTML() {
+  const doctype = '<!DOCTYPE html>';
+  const clone = document.documentElement.cloneNode(true);
+  // Keep buttons intact — the live page should retain editing capability
+  // Remove transient toast if lingering
+  clone.querySelectorAll('.toast.show').forEach(el => el.classList.remove('show'));
+  const marker = document.createElement('meta');
+  marker.setAttribute('name', 'exported-from');
+  marker.setAttribute('content', 'ai-empower-landing · ' + new Date().toISOString());
+  clone.querySelector('head').appendChild(marker);
+  return doctype + '\n' + clone.outerHTML;
+}
+
+async function syncToGitHub() {
+  let token = getStoredToken();
+
+  if (!token) {
+    token = prompt(
+      '请输入 GitHub Personal Access Token（需要 repo 权限）：\n\n' +
+      '获取方式：GitHub → Settings → Developer settings → Personal access tokens → Tokens (classic)\n' +
+      '勾选 "repo" 作用域后生成。\n\n' +
+      'Token 将保存在浏览器本地存储中，仅用于此页面的仓库同步。'
+    );
+    if (!token || !token.trim()) return;
+    token = token.trim();
+    storeToken(token);
+  }
+
+  const status = document.getElementById('save-status');
+  const syncBtn = document.getElementById('btn-sync');
+  const origText = syncBtn ? syncBtn.innerHTML : '';
+
+  // Show working state
+  if (syncBtn) { syncBtn.innerHTML = '<span>同步中…</span>'; syncBtn.disabled = true; }
+  if (status) status.textContent = '正在同步到 GitHub…';
+
+  try {
+    // 1) Get current file SHA
+    const getUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}?ref=${GITHUB_BRANCH}`;
+    const getResp = await fetch(getUrl, {
+      headers: { 'Authorization': `token ${token}`, 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!getResp.ok) {
+      const err = await getResp.json().catch(() => ({}));
+      if (getResp.status === 401) {
+        clearToken();
+        throw new Error('Token 无效或已过期，请重新输入。');
+      }
+      throw new Error(`获取文件信息失败 (${getResp.status}): ${err.message || '未知错误'}`);
+    }
+    const fileInfo = await getResp.json();
+    const sha = fileInfo.sha;
+
+    // 2) Push updated content
+    const htmlContent = buildFullHTML();
+    const base64Content = btoa(unescape(encodeURIComponent(htmlContent)));
+
+    const putUrl = `https://api.github.com/repos/${GITHUB_OWNER}/${GITHUB_REPO}/contents/${GITHUB_PATH}`;
+    const putBody = {
+      message: `Update index.html · ${new Date().toLocaleString('zh-CN')}`,
+      content: base64Content,
+      sha: sha,
+      branch: GITHUB_BRANCH
+    };
+
+    const putResp = await fetch(putUrl, {
+      method: 'PUT',
+      headers: {
+        'Authorization': `token ${token}`,
+        'Accept': 'application/vnd.github.v3+json',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(putBody)
+    });
+
+    if (!putResp.ok) {
+      const err = await putResp.json().catch(() => ({}));
+      if (putResp.status === 401) { clearToken(); throw new Error('Token 无效，请重新输入。'); }
+      if (putResp.status === 409) throw new Error('文件已被他人修改，请刷新页面后重试。');
+      throw new Error(`推送失败 (${putResp.status}): ${err.message || '未知错误'}`);
+    }
+
+    // Success
+    const result = await putResp.json();
+    if (status) {
+      status.textContent = '已同步到仓库 ' + nowStamp();
+      status.classList.remove('flash');
+      void status.offsetWidth;
+      status.classList.add('flash');
+    }
+    showToast('已同步到 GitHub 仓库，页面即将更新');
+
+  } catch (e) {
+    console.error('[syncToGitHub]', e);
+    if (status) status.textContent = '同步失败: ' + e.message;
+    showToast('同步失败: ' + e.message);
+  } finally {
+    if (syncBtn) { syncBtn.innerHTML = origText; syncBtn.disabled = false; }
+  }
+}
+
+function forgetGitHubToken() {
+  if (confirm('确定要清除已保存的 GitHub Token 吗？下次同步需要重新输入。')) {
+    clearToken();
+    showToast('Token 已清除');
+  }
+}
+
 /* ========== Rebind buttons after reset ========== */
 function rebindButtons() {
   const saveBtn = document.getElementById('btn-save');
-  const resBtn = document.getElementById('btn-reset');
+  const syncBtn = document.getElementById('btn-sync');
+  const resBtn  = document.getElementById('btn-reset');
   if (saveBtn) saveBtn.addEventListener('click', saveToLocal);
+  if (syncBtn) {
+    syncBtn.addEventListener('click', syncToGitHub);
+    // Right-click to forget token
+    syncBtn.addEventListener('contextmenu', (e) => {
+      e.preventDefault();
+      forgetGitHubToken();
+    });
+  }
   if (resBtn) resBtn.addEventListener('click', resetToSource);
 }
 
